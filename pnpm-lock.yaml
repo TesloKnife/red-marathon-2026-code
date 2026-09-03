@@ -205,7 +205,11 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      typescript:
+        specifier: ~6.0.3
+        version: 6.0.3
 
   apps/mobile:
     dependencies:
@@ -294,7 +298,11 @@ importers:
 
   packages/api: {}
 
-  packages/constants: {}
+  packages/constants:
+    dependencies:
+      '@app/types':
+        specifier: workspace:^
+        version: link:../types
 
   packages/hooks: {}
 
