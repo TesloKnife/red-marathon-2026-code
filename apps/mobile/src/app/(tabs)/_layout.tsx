@@ -1,9 +1,21 @@
 import { Tabs } from 'expo-router'
 import { Home, Library, Search, User } from 'lucide-react-native'
 
+import { colors } from '@app/tokens'
+
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.text['little-muted'],
+        tabBarStyle: {
+          backgroundColor: colors.bg.base,
+          borderTopColor: colors.border
+        }
+      }}
+    >
       <Tabs.Screen
         name='index'
         options={{
