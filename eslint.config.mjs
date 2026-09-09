@@ -23,6 +23,17 @@ export default defineConfig([
   reactHooks.configs.flat.recommended,
 
   {
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: ['tsconfig.json', 'apps/*/tsconfig.json'],
+          noWarnOnMultipleProjects: true
+        }
+      }
+    }
+  },
+
+  {
     files: ['**/*.{ts,tsx}'],
     rules: {
       '@typescript-eslint/consistent-type-imports': [

@@ -1,11 +1,13 @@
 export const fontSize = {
-  xs: 12,
-  sm: 14,
-  base: 16,
-  lg: 18,
-  xl: 22,
-  '2xl': 28,
-  '3xl': 34
+  xs: 14,
+  sm: 16,
+  base: 18,
+  lg: 20,
+  '2lg': 22,
+  xl: 24,
+  '1.5xl': 26,
+  '2xl': 30,
+  '3xl': 36
 } as const
 
 export const fontWeight = {

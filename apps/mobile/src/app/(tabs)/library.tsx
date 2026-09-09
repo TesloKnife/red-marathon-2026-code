@@ -28,8 +28,8 @@ export default function Library() {
 
 const styles = StyleSheet.create({
   item: {
-    color: colors.text.secondary,
-    fontSize: fontSize.lg,
+    color: colors.text.primary,
+    fontSize: fontSize.base,
     paddingVertical: space[3]
   }
 })
