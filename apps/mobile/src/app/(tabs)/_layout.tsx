@@ -41,6 +41,7 @@ export default function TabsLayout() {
         name='search'
         role='search'
       >
+        <NativeTabs.Trigger.Icon md='search' />
         <NativeTabs.Trigger.Label>Search</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
     </NativeTabs>
