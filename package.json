@@ -12,7 +12,8 @@
     "mob": "pnpm --filter mobile",
     "web": "pnpm --filter web",
     "ext": "pnpm --filter ext",
-    "dev": "pnpm -r --parallel dev"
+    "dev": "pnpm -r --parallel dev",
+    "back:dev": "cd ../red-marathon-2026-back-end && pnpm start:dev"
   },
   "keywords": [],
   "author": "",
