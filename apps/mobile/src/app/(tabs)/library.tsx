@@ -1,5 +1,5 @@
 import { Link } from 'expo-router'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 import { MEDIA_TYPES } from '@app/types'
 
@@ -7,12 +7,13 @@ import { TYPE_LABELS } from '@app/constants'
 
 import { colors, fontSize, space } from '@app/tokens'
 
-import { Screen } from '@/components/Screen'
+import { Screen } from '@/components/ui/Screen'
+import { ScreenTitle } from '@/components/ui/ScreenTitle'
 
 export default function Library() {
   return (
     <Screen>
-      <Text>Library</Text>
+      <ScreenTitle>Library</ScreenTitle>
       {MEDIA_TYPES.map(type => (
         <Link
           key={type}

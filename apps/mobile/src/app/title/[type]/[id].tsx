@@ -1,20 +1,30 @@
 import { router, useLocalSearchParams } from 'expo-router'
-import { Pressable, Text } from 'react-native'
+import { ChevronLeft } from 'lucide-react-native'
+import { Pressable, Text, View } from 'react-native'
 
-import { Screen } from '@/components/Screen'
+import { FloatingButton } from '@/components/ui/FloatingButton'
+import { Screen } from '@/components/ui/Screen'
 
 export default function TitleDetail() {
   const { id, type } = useLocalSearchParams<{ id: string; type: string }>()
   return (
     <Screen>
-      <Text>
-        Title {type} {id}
-      </Text>
-      <Pressable onPress={() => router.back()}>
-        <Text>Back</Text>
-      </Pressable>
+      <FloatingButton
+        onPress={() => {}}
+        side='left'
+        icon={ChevronLeft}
+        iconOffset={-2}
+      />
 
-      {/* 
+      <View style={{ marginTop: 60 }}>
+        <Text>
+          Title {type} {id}
+        </Text>
+        <Pressable onPress={() => router.back()}>
+          <Text>Back</Text>
+        </Pressable>
+
+        {/* 
         Header
           Left side: back button (arrow left)
 
@@ -47,6 +57,7 @@ export default function TitleDetail() {
 
 
       */}
+      </View>
     </Screen>
   )
 }

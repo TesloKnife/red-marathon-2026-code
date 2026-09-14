@@ -25,7 +25,7 @@ export const http = async <T>(url: string, init?: RequestInit): Promise<T> => {
     ...init,
     headers: {
       ...(init?.headers || {}),
-      ...(token ? { Authorization: `Bearer ${await token}` } : {})
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
     }
   })
 
