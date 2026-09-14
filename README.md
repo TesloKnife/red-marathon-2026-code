@@ -2,6 +2,14 @@
 
 pnpm mob add @app/tokens
 
+## Установить что-то в Expo
+
+pnpm mob exec expo install expo-secure-store
+
+## Генерация типов через Orval
+
+pnpm --filter @app/api gen
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).

@@ -1,16 +1,22 @@
 import { defineConfig } from 'orval'
 
 export default defineConfig({
-  petstore: {
+  api: {
+    input: {
+      target: 'http://localhost:4000/api/docs-json'
+    },
     output: {
       mode: 'tags-split',
-      target: 'src/api/petstore.ts',
-      schemas: 'src/api/model',
+      target: './src/generated/endpoints.ts',
+      schemas: './src/generated/models',
       client: 'react-query',
-      mock: true
-    },
-    input: {
-      target: './petstore.yaml'
+      clean: true,
+      override: {
+        mutator: {
+          path: './src/http.ts',
+          name: 'http'
+        }
+      }
     }
   }
 })
