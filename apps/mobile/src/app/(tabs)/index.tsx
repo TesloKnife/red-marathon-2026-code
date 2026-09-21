@@ -1,9 +1,14 @@
+import { ScrollView } from 'react-native'
+
+import { space } from '@app/tokens'
+
 import type { TitleListItemResponse } from '@app/api'
 
 import { HomeHeader } from '@/components/home/HomeHeader'
 import { HomeHeroSlider } from '@/components/home/HomeHeroSlider'
 import { SectionCarousel } from '@/components/section-carousel/SectionCarousel'
 import { TitleCard } from '@/components/title-card/TitleCard'
+import { Screen } from '@/components/ui/Screen'
 
 export const SAMPLE_TITLES: TitleListItemResponse[] = [
   {
@@ -63,30 +68,38 @@ export const SAMPLE_TITLES: TitleListItemResponse[] = [
 
 export default function Index() {
   return (
-    <>
+    <Screen edges={[]}>
       <HomeHeader />
 
-      <HomeHeroSlider items={SAMPLE_TITLES} />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: space[20] }}
+      >
+        <HomeHeroSlider items={SAMPLE_TITLES} />
 
-      <SectionCarousel title='Top picks for you'>
-        {SAMPLE_TITLES.map(title => (
-          <TitleCard
-            onPress={() => {}}
-            title={title}
-            key={title.id}
-          ></TitleCard>
-        ))}
-      </SectionCarousel>
+        <SectionCarousel
+          title='Top picks for you'
+          onPressArrow={() => {}}
+        >
+          {SAMPLE_TITLES.map(title => (
+            <TitleCard
+              onPress={() => {}}
+              title={title}
+              key={title.id}
+            ></TitleCard>
+          ))}
+        </SectionCarousel>
 
-      <SectionCarousel title='Polular now'>
-        {SAMPLE_TITLES.map(title => (
-          <TitleCard
-            onPress={() => {}}
-            title={title}
-            key={title.id}
-          ></TitleCard>
-        ))}
-      </SectionCarousel>
-    </>
+        <SectionCarousel title='Polular now'>
+          {SAMPLE_TITLES.map(title => (
+            <TitleCard
+              onPress={() => {}}
+              title={title}
+              key={title.id}
+            ></TitleCard>
+          ))}
+        </SectionCarousel>
+      </ScrollView>
+    </Screen>
   )
 }

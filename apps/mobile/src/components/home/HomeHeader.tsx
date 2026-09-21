@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
   logo: {
     color: colors.text.primary,
     fontSize: fontSize['1.5xl'],
-    fontWeight: fontWeight.bold
+    fontWeight: fontWeight.bold,
+    textShadowColor: 'rgba(0, 0, 0, 0.25)'
   }
 })
