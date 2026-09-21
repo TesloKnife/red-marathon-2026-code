@@ -1,14 +1,9 @@
-import { Play, Plus } from 'lucide-react-native'
-import { ScrollView, View } from 'react-native'
-
-import { space } from '@app/tokens'
-
 import type { TitleListItemResponse } from '@app/api'
 
-import { HomeHeader } from '@/components/HomeHeader'
+import { HomeHeader } from '@/components/home/HomeHeader'
+import { HomeHeroSlider } from '@/components/home/HomeHeroSlider'
+import { SectionCarousel } from '@/components/section-carousel/SectionCarousel'
 import { TitleCard } from '@/components/title-card/TitleCard'
-import { Button } from '@/components/ui/Button'
-import { Screen } from '@/components/ui/Screen'
 
 export const SAMPLE_TITLES: TitleListItemResponse[] = [
   {
@@ -27,7 +22,7 @@ export const SAMPLE_TITLES: TitleListItemResponse[] = [
     name: 'Severance',
     slug: 'severance',
     coverUrl:
-      'https://www.cinematerial.com/p/500x/1k35swfb/severance-movie-poster.jpg',
+      'https://prosto-poster.ru/img-wiki/wmc-svr-1c89a2c11/webp/1500/wmc-svr-1c89a2c11_1.webp',
     releaseDate: '2022-02-18T00:00:00.000Z',
     rating: 8.7,
     ratingCount: 2100
@@ -68,52 +63,30 @@ export const SAMPLE_TITLES: TitleListItemResponse[] = [
 
 export default function Index() {
   return (
-    <Screen>
+    <>
       <HomeHeader />
 
-      <View style={{ marginTop: 60 }}>
-        <Button
-          icon={Play}
-          onPress={() => {}}
-        >
-          Watch Movie
-        </Button>
+      <HomeHeroSlider items={SAMPLE_TITLES} />
 
-        <Button
-          variant='secondary'
-          icon={Plus}
-          onPress={() => {}}
-        />
+      <SectionCarousel title='Top picks for you'>
+        {SAMPLE_TITLES.map(title => (
+          <TitleCard
+            onPress={() => {}}
+            title={title}
+            key={title.id}
+          ></TitleCard>
+        ))}
+      </SectionCarousel>
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ marginTop: 15 }}
-          contentContainerStyle={{ gap: space[3], paddingHorizontal: space[5] }}
-        >
-          {SAMPLE_TITLES.map(title => (
-            <TitleCard
-              onPress={() => {}}
-              title={title}
-              key={title.id}
-            ></TitleCard>
-          ))}
-        </ScrollView>
-
-        {/* 
-        Header
-          Left side: Logo (naming)
-          Rihgt side: Bell (notification)
-
-        slider (continue watching)
-          Buttons: Read more, Plus (to add watch list)
-
-        Top picks fir you (Carousel)
-        
-        Popular (Carousel)
-
-      */}
-      </View>
-    </Screen>
+      <SectionCarousel title='Polular now'>
+        {SAMPLE_TITLES.map(title => (
+          <TitleCard
+            onPress={() => {}}
+            title={title}
+            key={title.id}
+          ></TitleCard>
+        ))}
+      </SectionCarousel>
+    </>
   )
 }

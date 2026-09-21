@@ -1,6 +1,3 @@
-// Header
-//   Left side: Logo (naming)
-//   Rihgt side: Bell (notification)
 import { Bell } from 'lucide-react-native'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -30,7 +27,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: space[5]
+    paddingHorizontal: space['layout-horizontal']
   },
   logo: {
     color: colors.text.primary,
