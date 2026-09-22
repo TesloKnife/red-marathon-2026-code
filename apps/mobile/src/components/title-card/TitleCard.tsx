@@ -38,7 +38,7 @@ export function TitleCard({ title, onPress }: Props) {
   }
 
   return (
-    <View style={{ width: config.width, height: config.height }}>
+    <View style={{ width: 114, height: 171 }}>
       {config.stacked && (
         <>
           <View

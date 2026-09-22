@@ -3,18 +3,25 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { Play, Plus } from 'lucide-react-native'
 import { useState } from 'react'
 import {
-  ScrollView,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
   StyleSheet,
   Text,
   View,
   useWindowDimensions
 } from 'react-native'
+import Animated, {
+  useAnimatedScrollHandler,
+  useSharedValue
+} from 'react-native-reanimated'
 
 import { colors, fontSize, fontWeight, space } from '@app/tokens'
 
 import type { TitleListItemResponse } from '@app/api'
 
 import { Button } from '../ui/Button'
+
+import { PaginationDot } from './PaginationDot'
 
 interface Props {
   items: TitleListItemResponse[]
@@ -27,15 +34,26 @@ export function HomeHeroSlider({ items }: Props) {
   const height = width * 1.35
   const currnet = items[index]
 
+  const scrollX = useSharedValue(0)
+
+  const scrollHandler = useAnimatedScrollHandler(event => {
+    scrollX.set(event.contentOffset.x)
+  })
+
+  const onMomentumScrollEnd = (
+    event: NativeSyntheticEvent<NativeScrollEvent>
+  ) => {
+    setIndex(Math.round(event.nativeEvent.contentOffset.x / width))
+  }
+
   return (
     <View style={{ height }}>
-      <ScrollView
+      <Animated.ScrollView
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onMomentumScrollEnd={e => {
-          setIndex(Math.round(e.nativeEvent.contentOffset.x / width))
-        }}
+        onScroll={scrollHandler}
+        onMomentumScrollEnd={onMomentumScrollEnd}
         style={StyleSheet.absoluteFill}
       >
         {items.map(item => (
@@ -47,7 +65,7 @@ export function HomeHeroSlider({ items }: Props) {
             transition={300}
           />
         ))}
-      </ScrollView>
+      </Animated.ScrollView>
 
       <LinearGradient
         colors={[
@@ -72,7 +90,7 @@ export function HomeHeroSlider({ items }: Props) {
           {currnet?.name}
         </Text>
 
-        <Text style={styles.genres}>Thrillers . Drammas . Action . Chime</Text>
+        <Text style={styles.genres}>Thrillers • Drammas • Action • Chime</Text>
 
         <Text
           style={styles.description}
@@ -98,25 +116,14 @@ export function HomeHeroSlider({ items }: Props) {
           </View>
 
           <View style={styles.dots}>
-            {items.map((item, i) => {
-              const distance = Math.abs(i - index)
-              const size = Math.max(4, 9 - distance)
-
-              return (
-                <View
-                  key={item.id}
-                  style={[
-                    styles.dot,
-                    {
-                      width: size,
-                      height: size,
-                      borderRadius: size / 2
-                    },
-                    i === index && styles.dotActive
-                  ]}
-                />
-              )
-            })}
+            {items.map((item, index) => (
+              <PaginationDot
+                key={item.id}
+                index={index}
+                width={width}
+                scrollX={scrollX}
+              />
+            ))}
           </View>
         </View>
       </View>

@@ -1,4 +1,7 @@
-import { ScrollView } from 'react-native'
+import Animated, {
+  useAnimatedScrollHandler,
+  useSharedValue
+} from 'react-native-reanimated'
 
 import { space } from '@app/tokens'
 
@@ -67,13 +70,18 @@ export const SAMPLE_TITLES: TitleListItemResponse[] = [
 ]
 
 export default function Index() {
+  const scrollY = useSharedValue(0)
+
+  const scrollHandler = useAnimatedScrollHandler(e => {
+    scrollY.set(e.contentOffset.y)
+  })
   return (
     <Screen edges={[]}>
-      <HomeHeader />
-
-      <ScrollView
+      <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: space[20] }}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
       >
         <HomeHeroSlider items={SAMPLE_TITLES} />
 
@@ -99,7 +107,9 @@ export default function Index() {
             ></TitleCard>
           ))}
         </SectionCarousel>
-      </ScrollView>
+      </Animated.ScrollView>
+
+      <HomeHeader scrollY={scrollY} />
     </Screen>
   )
 }
