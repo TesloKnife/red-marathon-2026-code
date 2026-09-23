@@ -1,4 +1,3 @@
-import { Image } from 'expo-image'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Play, Plus } from 'lucide-react-native'
 import { useState } from 'react'
@@ -11,6 +10,8 @@ import {
   useWindowDimensions
 } from 'react-native'
 import Animated, {
+  FadeIn,
+  FadeOut,
   useAnimatedScrollHandler,
   useSharedValue
 } from 'react-native-reanimated'
@@ -21,6 +22,7 @@ import type { TitleListItemResponse } from '@app/api'
 
 import { Button } from '../ui/Button'
 
+import { HomeHeroSlide } from './HomeHeroSlide'
 import { PaginationDot } from './PaginationDot'
 
 interface Props {
@@ -31,8 +33,8 @@ export function HomeHeroSlider({ items }: Props) {
   const { width } = useWindowDimensions()
   const [index, setIndex] = useState(0)
 
-  const height = width * 1.35
-  const currnet = items[index]
+  const height = width * 1.4
+  const current = items[index]
 
   const scrollX = useSharedValue(0)
 
@@ -54,15 +56,16 @@ export function HomeHeroSlider({ items }: Props) {
         showsHorizontalScrollIndicator={false}
         onScroll={scrollHandler}
         onMomentumScrollEnd={onMomentumScrollEnd}
-        style={StyleSheet.absoluteFill}
+        scrollEventThrottle={16}
       >
-        {items.map(item => (
-          <Image
+        {items.map((item, i) => (
+          <HomeHeroSlide
             key={item.id}
-            source={item.coverUrl}
-            style={{ width, height }}
-            contentFit='cover'
-            transition={300}
+            item={item}
+            index={i}
+            width={width}
+            height={height}
+            scrollX={scrollX}
           />
         ))}
       </Animated.ScrollView>
@@ -83,23 +86,37 @@ export function HomeHeroSlider({ items }: Props) {
         style={styles.content}
         pointerEvents='box-none'
       >
-        <Text
-          style={styles.name}
-          numberOfLines={2}
+        <Animated.View
+          key={current?.id}
+          entering={FadeIn.duration(400)}
+          exiting={FadeOut.duration(200)}
+          style={{ gap: space[2] }}
+          pointerEvents='none'
         >
-          {currnet?.name}
-        </Text>
+          <Text
+            style={styles.name}
+            numberOfLines={2}
+          >
+            {current?.name}
+          </Text>
 
-        <Text style={styles.genres}>Thrillers • Drammas • Action • Chime</Text>
+          <Text style={styles.genres}>
+            Thrillers • Drammas • Action • Chime
+          </Text>
 
-        <Text
-          style={styles.description}
-          numberOfLines={2}
+          <Text
+            style={styles.description}
+            numberOfLines={2}
+          >
+            When an overachieving college senior makes a wrong turn, her road
+            trip becomes a life-changing fight for...
+          </Text>
+        </Animated.View>
+
+        <View
+          style={styles.bottom}
+          pointerEvents='box-none'
         >
-          When an overachieving college senior makes a wrong turn, her road trip
-          becomes a life-changing fight for...
-        </Text>
-        <View style={styles.bottom}>
           <View style={styles.actions}>
             <Button
               icon={Play}
@@ -166,11 +183,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: space[2]
-  },
-  dot: {
-    backgroundColor: colors.text.muted
-  },
-  dotActive: {
-    backgroundColor: colors.text.primary
   }
 })

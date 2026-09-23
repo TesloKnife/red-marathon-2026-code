@@ -75,6 +75,7 @@ export default function Index() {
   const scrollHandler = useAnimatedScrollHandler(e => {
     scrollY.set(e.contentOffset.y)
   })
+
   return (
     <Screen edges={[]}>
       <Animated.ScrollView
@@ -98,15 +99,20 @@ export default function Index() {
           ))}
         </SectionCarousel>
 
-        <SectionCarousel title='Polular now'>
+        <SectionCarousel
+          title='Polular now'
+          onPressArrow={() => {}}
+        >
           {SAMPLE_TITLES.map(title => (
             <TitleCard
               onPress={() => {}}
               title={title}
               key={title.id}
-            ></TitleCard>
+            />
           ))}
         </SectionCarousel>
+
+        {/* <Button onPress={() => router.push('/register')}>Sign up</Button> */}
       </Animated.ScrollView>
 
       <HomeHeader scrollY={scrollY} />
