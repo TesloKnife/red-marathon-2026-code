@@ -7,6 +7,9 @@
   "scripts": {
     "gen": "orval"
   },
+  "dependencies": {
+    "@tanstack/react-query": "^5.102.8"
+  },
   "devDependencies": {
     "orval": "^8.31.0"
   }

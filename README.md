@@ -1,3 +1,9 @@
+## После обновления expo
+
+rm -rf apps/mobile/.expo
+pnpm mob start --clear
+и нажимаем потом a
+
 ## Добавление/подключение новых библиотек
 
 pnpm mob add @app/tokens

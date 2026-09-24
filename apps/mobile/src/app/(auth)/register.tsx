@@ -5,7 +5,7 @@ import { View } from 'react-native'
 
 import { type TAuthForm, authSchema } from '@app/schemas'
 
-import { useAuthMobileRegister } from '@app/api'
+import { type MobileAuthResponse, useAuthMobileRegister } from '@app/api'
 
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -20,14 +20,22 @@ export default function Register() {
 
   const { mutate, isPending } = useAuthMobileRegister({
     mutation: {
-      onSuccess: async ({ data: { accessToken, refreshToken } }) => {
+      onSuccess: async result => {
+        const { accessToken, refreshToken } =
+          result as unknown as MobileAuthResponse
+        console.log('[register] success: tokens received, saving')
         await saveTokens(accessToken, refreshToken)
         router.replace('/')
+      },
+      onError: (error: Error) => {
+        console.error('[register] request FAILED:', error)
       }
     }
   })
 
   const onSubmit = (data: TAuthForm) => {
+    console.log('[register] validation OK, sending to API:', data)
+
     mutate({ data })
   }
 

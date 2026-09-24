@@ -7,6 +7,11 @@ import {
 } from 'expo-router/build/react-navigation'
 import { StatusBar } from 'expo-status-bar'
 
+import '@/lib/api'
+
+// Якорь корневого навигатора: при запуске открывать (tabs), а не первую группу по алфавиту
+export const unstable_settings = { anchor: '(tabs)' }
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
