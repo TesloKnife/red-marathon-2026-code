@@ -7,7 +7,7 @@ import { AuthForm } from '@/components/auth/AuthForm'
 
 import { saveTokens } from '@/lib/token'
 
-export default function Register() {
+export default function Login() {
   const queryClient = useQueryClient()
 
   const { mutate, isPending, error } = useAuthMobileRegister({
@@ -18,14 +18,14 @@ export default function Register() {
         router.replace('/')
       },
       onError: (error: Error) => {
-        console.error('[register] request FAILED:', error)
+        console.error('[login] request FAILED:', error)
       }
     }
   })
 
   return (
     <AuthForm
-      type='register'
+      type='login'
       error={error}
       isPending={isPending}
       onSubmit={data => mutate({ data })}

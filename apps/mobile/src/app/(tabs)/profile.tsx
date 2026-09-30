@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { router } from 'expo-router'
+import { Redirect, router } from 'expo-router'
 import { Text, View } from 'react-native'
 
 import { colors, fontSize, space } from '@app/tokens'
@@ -13,14 +13,14 @@ import { clearTokens, getRefreshToken } from '@/lib/token'
 
 export default function Profile() {
   const queryClient = useQueryClient()
-  const { data } = useUserFindMe()
+  const { data, isPending: isLoading, isError } = useUserFindMe()
 
   const { mutate: logout, isPending } = useAuthMobileLogout({
     mutation: {
       onSettled: async () => {
         await clearTokens()
         queryClient.clear()
-        router.replace('/register')
+        router.replace('/login')
       }
     }
   })
@@ -31,11 +31,15 @@ export default function Profile() {
     logout({ data: { refreshToken } })
   }
 
+  if (isLoading) return <Screen />
+
+  if (isError || !data) return <Redirect href='/login' />
+
   return (
     <Screen>
       <View style={{ padding: space['layout-horizontal'], gap: space[4] }}>
         <Text style={{ color: colors.text.primary, fontSize: fontSize.xl }}>
-          {data?.data.email}
+          {data.data.email}
         </Text>
 
         <Button

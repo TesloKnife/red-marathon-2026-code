@@ -1,4 +1,3 @@
-import { router } from 'expo-router'
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue
@@ -12,7 +11,6 @@ import { HomeHeader } from '@/components/home/HomeHeader'
 import { HomeHeroSlider } from '@/components/home/HomeHeroSlider'
 import { SectionCarousel } from '@/components/section-carousel/SectionCarousel'
 import { TitleCard } from '@/components/title-card/TitleCard'
-import { Button } from '@/components/ui/Button'
 import { Screen } from '@/components/ui/Screen'
 
 export const SAMPLE_TITLES: TitleListItemResponse[] = [
@@ -113,8 +111,6 @@ export default function Index() {
             />
           ))}
         </SectionCarousel>
-
-        <Button onPress={() => router.push('/register')}>Sign up</Button>
       </Animated.ScrollView>
 
       <HomeHeader scrollY={scrollY} />

@@ -50,9 +50,7 @@ export const http = async <T>(url: string, init?: RequestInit): Promise<T> => {
     throw new ApiError(response.status, Array.isArray(raw) ? raw : [raw])
   }
 
-  if (response.status === 204) {
-    return undefined as T
-  }
+  const data = response.status === 204 ? undefined : await response.json()
 
-  return response.json()
+  return { data, status: response.status, headers: response.headers } as T
 }
