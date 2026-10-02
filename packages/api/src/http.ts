@@ -1,12 +1,18 @@
 let getToken: () => Promise<string | null> = async () => null
+let onRefresh: (() => Promise<boolean>) | null = null
+let onUnauthorized: (() => void) | null = null
 let baseUrl: string = ''
 
 export const configureApi = (options: {
   baseUrl: string
   getToken: () => Promise<string | null>
+  onRefresh?: () => Promise<boolean>
+  onUnauthorized?: () => void
 }) => {
   getToken = options.getToken
   baseUrl = options.baseUrl
+  onRefresh = options.onRefresh ?? null
+  onUnauthorized = options.onUnauthorized ?? null
 }
 
 export class ApiError extends Error {
@@ -18,6 +24,20 @@ export class ApiError extends Error {
   }
 }
 
+let refreshPromise: Promise<boolean> | null = null
+
+const request = async (url: string, init?: RequestInit) => {
+  const token = await getToken()
+
+  return fetch(`${baseUrl}${url}`, {
+    ...init,
+    headers: {
+      ...(init?.headers || {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    }
+  })
+}
+
 export const http = async <T>(url: string, init?: RequestInit): Promise<T> => {
   if (!baseUrl) {
     throw new Error(
@@ -25,22 +45,22 @@ export const http = async <T>(url: string, init?: RequestInit): Promise<T> => {
     )
   }
 
-  const token = await getToken()
+  let response = await request(url, init)
 
-  let response: Response
-  try {
-    response = await fetch(`${baseUrl}${url}`, {
-      ...init,
-      headers: {
-        ...(init?.headers || {}),
-        ...(token ? { Authorization: `Bearer ${token}` } : {})
-      }
-    })
-  } catch (e) {
-    // сетевая ошибка: бэкенд не запущен или адрес недоступен
-    // (на физическом телефоне localhost = сам телефон, а не ПК!)
-    console.error('[api] NETWORK ERROR — backend unreachable from the app:', e)
-    throw e
+  if (response.status === 401 && onRefresh && !url.includes('/auth')) {
+    if (!refreshPromise) {
+      refreshPromise = onRefresh().finally(() => {
+        refreshPromise = null
+      })
+    }
+
+    const isRefreshed = await refreshPromise
+
+    if (isRefreshed) {
+      response = await request(url, init)
+    } else {
+      onUnauthorized?.()
+    }
   }
 
   if (!response.ok) {

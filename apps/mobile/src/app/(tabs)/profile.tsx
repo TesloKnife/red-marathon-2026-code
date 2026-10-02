@@ -6,6 +6,7 @@ import { colors, fontSize, space } from '@app/tokens'
 
 import { useAuthMobileLogout, useUserFindMe } from '@app/api'
 
+import { TokenDebug } from '@/components/TokenDebug'
 import { Button } from '@/components/ui/Button'
 import { Screen } from '@/components/ui/Screen'
 
@@ -13,7 +14,7 @@ import { clearTokens, getRefreshToken } from '@/lib/token'
 
 export default function Profile() {
   const queryClient = useQueryClient()
-  const { data, isPending: isLoading, isError } = useUserFindMe()
+  const { data, isPending: isLoading, isError, refetch } = useUserFindMe()
 
   const { mutate: logout, isPending } = useAuthMobileLogout({
     mutation: {
@@ -49,6 +50,8 @@ export default function Profile() {
         >
           Sign Out
         </Button>
+
+        {__DEV__ && <TokenDebug refetch={refetch} />}
       </View>
     </Screen>
   )
