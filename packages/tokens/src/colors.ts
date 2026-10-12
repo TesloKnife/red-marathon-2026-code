@@ -13,7 +13,7 @@ export const colors = {
     elevated: '#000000'
   },
   border: '#171717',
-  select: 'rgba(129, 65, 248, 0.14',
+  select: 'rgba(129, 65, 248, 0.14)',
   status: {
     success: '#8141f8',
     warning: '#f6a290',
