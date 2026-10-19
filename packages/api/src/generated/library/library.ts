@@ -10,9 +10,14 @@ import {
   useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -110,7 +115,7 @@ export const getLibraryFindAllQueryKey = (params?: LibraryFindAllParams,) => {
     }
 
 
-export const getLibraryFindAllQueryOptions = <TData = Awaited<ReturnType<typeof libraryFindAll>>, TError = unknown>(params?: LibraryFindAllParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof libraryFindAll>>, TError, TData>, request?: SecondParameter<typeof http>}
+export const getLibraryFindAllQueryOptions = <TData = Awaited<ReturnType<typeof libraryFindAll>>, TError = unknown>(params?: LibraryFindAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof libraryFindAll>>, TError, TData>>, request?: SecondParameter<typeof http>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -125,22 +130,46 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof libraryFindAll>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof libraryFindAll>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type LibraryFindAllQueryResult = NonNullable<Awaited<ReturnType<typeof libraryFindAll>>>
 export type LibraryFindAllQueryError = unknown
 
 
+export function useLibraryFindAll<TData = Awaited<ReturnType<typeof libraryFindAll>>, TError = unknown>(
+ params: undefined |  LibraryFindAllParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof libraryFindAll>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof libraryFindAll>>,
+          TError,
+          Awaited<ReturnType<typeof libraryFindAll>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useLibraryFindAll<TData = Awaited<ReturnType<typeof libraryFindAll>>, TError = unknown>(
+ params?: LibraryFindAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof libraryFindAll>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof libraryFindAll>>,
+          TError,
+          Awaited<ReturnType<typeof libraryFindAll>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useLibraryFindAll<TData = Awaited<ReturnType<typeof libraryFindAll>>, TError = unknown>(
+ params?: LibraryFindAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof libraryFindAll>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useLibraryFindAll<TData = Awaited<ReturnType<typeof libraryFindAll>>, TError = unknown>(
- params?: LibraryFindAllParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof libraryFindAll>>, TError, TData>, request?: SecondParameter<typeof http>}
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: LibraryFindAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof libraryFindAll>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getLibraryFindAllQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -235,13 +264,13 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
     export const useLibraryCreate = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof libraryCreate>>, TError,LibraryCreateMutationVariables, TContext>, request?: SecondParameter<typeof http>}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof libraryCreate>>,
         TError,
         LibraryCreateMutationVariables,
         TContext
       > => {
-      return useMutation(getLibraryCreateMutationOptions(options));
+      return useMutation(getLibraryCreateMutationOptions(options), queryClient);
     }
     export type libraryFindByTitleResponse200 = {
   data: LibraryEntryResponse
@@ -288,7 +317,7 @@ export const getLibraryFindByTitleQueryKey = (titleId: string,) => {
     }
 
 
-export const getLibraryFindByTitleQueryOptions = <TData = Awaited<ReturnType<typeof libraryFindByTitle>>, TError = unknown>(titleId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof libraryFindByTitle>>, TError, TData>, request?: SecondParameter<typeof http>}
+export const getLibraryFindByTitleQueryOptions = <TData = Awaited<ReturnType<typeof libraryFindByTitle>>, TError = unknown>(titleId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof libraryFindByTitle>>, TError, TData>>, request?: SecondParameter<typeof http>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -303,25 +332,49 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: titleId !== null && titleId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof libraryFindByTitle>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: titleId !== null && titleId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof libraryFindByTitle>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type LibraryFindByTitleQueryResult = NonNullable<Awaited<ReturnType<typeof libraryFindByTitle>>>
 export type LibraryFindByTitleQueryError = unknown
 
 
+export function useLibraryFindByTitle<TData = Awaited<ReturnType<typeof libraryFindByTitle>>, TError = unknown>(
+ titleId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof libraryFindByTitle>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof libraryFindByTitle>>,
+          TError,
+          Awaited<ReturnType<typeof libraryFindByTitle>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useLibraryFindByTitle<TData = Awaited<ReturnType<typeof libraryFindByTitle>>, TError = unknown>(
+ titleId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof libraryFindByTitle>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof libraryFindByTitle>>,
+          TError,
+          Awaited<ReturnType<typeof libraryFindByTitle>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useLibraryFindByTitle<TData = Awaited<ReturnType<typeof libraryFindByTitle>>, TError = unknown>(
+ titleId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof libraryFindByTitle>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Есть ли тайтл в библиотеке — для кнопки на карточке и в расширении
  */
 
 export function useLibraryFindByTitle<TData = Awaited<ReturnType<typeof libraryFindByTitle>>, TError = unknown>(
- titleId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof libraryFindByTitle>>, TError, TData>, request?: SecondParameter<typeof http>}
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ titleId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof libraryFindByTitle>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getLibraryFindByTitleQueryOptions(titleId,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -417,13 +470,13 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
     export const useLibraryUpdate = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof libraryUpdate>>, TError,LibraryUpdateMutationVariables, TContext>, request?: SecondParameter<typeof http>}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof libraryUpdate>>,
         TError,
         LibraryUpdateMutationVariables,
         TContext
       > => {
-      return useMutation(getLibraryUpdateMutationOptions(options));
+      return useMutation(getLibraryUpdateMutationOptions(options), queryClient);
     }
     export type libraryDeleteResponse204 = {
   data: boolean
@@ -496,11 +549,11 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
     export const useLibraryDelete = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof libraryDelete>>, TError,LibraryDeleteMutationVariables, TContext>, request?: SecondParameter<typeof http>}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof libraryDelete>>,
         TError,
         LibraryDeleteMutationVariables,
         TContext
       > => {
-      return useMutation(getLibraryDeleteMutationOptions(options));
+      return useMutation(getLibraryDeleteMutationOptions(options), queryClient);
     }
