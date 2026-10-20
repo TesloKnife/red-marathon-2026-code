@@ -1,4 +1,3 @@
-import { router } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 
 import { authTokenSchema } from '@app/schemas'
@@ -43,6 +42,6 @@ configureApi({
 
   onUnauthorized: async () => {
     await clearTokens()
-    router.replace('/login')
+    // router.replace('/login')
   }
 })

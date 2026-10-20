@@ -1,4 +1,4 @@
-import type { TitleListItemResponse } from '@app/api/src/generated/models'
+import type { DiscoverItemResponse } from '@app/api/src/generated/models'
 import { GlassView, isGlassEffectAPIAvailable } from 'expo-glass-effect'
 import { Image } from 'expo-image'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -16,7 +16,7 @@ import { CARD_CONFIG } from './config'
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
 interface Props {
-  title: TitleListItemResponse
+  title: Pick<DiscoverItemResponse, 'coverUrl' | 'type'>
   onPress: () => void
 }
 

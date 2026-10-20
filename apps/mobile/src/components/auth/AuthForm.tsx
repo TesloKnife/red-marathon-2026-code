@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from 'expo-router'
+import { ChevronLeft } from 'lucide-react-native'
 import { Controller, useForm } from 'react-hook-form'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
@@ -12,6 +13,7 @@ import { type TAuthForm, authSchema } from '@app/schemas'
 import { ApiError } from '@app/api'
 
 import { Button } from '../ui/Button'
+import { FloatingButton } from '../ui/FloatingButton'
 import { Input } from '../ui/Input'
 import { Screen } from '../ui/Screen'
 
@@ -30,6 +32,15 @@ export function AuthForm({ error, isPending, onSubmit, type }: Props) {
   })
   return (
     <Screen>
+      <FloatingButton
+        onPress={() => {
+          router.push('/')
+        }}
+        side='left'
+        icon={ChevronLeft}
+        iconOffset={-2}
+      />
+      <Text>Settings</Text>
       <View style={styles.root}>
         <View style={styles.center}>
           <Text style={styles.title}>{content.title}</Text>

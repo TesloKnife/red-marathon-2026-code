@@ -18,7 +18,7 @@ import Animated, {
 
 import { colors, fontSize, fontWeight, space } from '@app/tokens'
 
-import type { TitleListItemResponse } from '@app/api'
+import type { DiscoverItemResponse } from '@app/api'
 
 import { Button } from '../ui/Button'
 
@@ -26,7 +26,7 @@ import { HomeHeroSlide } from './HomeHeroSlide'
 import { PaginationDot } from './PaginationDot'
 
 interface Props {
-  items: TitleListItemResponse[]
+  items: DiscoverItemResponse[]
 }
 
 export function HomeHeroSlider({ items }: Props) {
@@ -60,7 +60,7 @@ export function HomeHeroSlider({ items }: Props) {
       >
         {items.map((item, i) => (
           <HomeHeroSlide
-            key={item.id}
+            key={item.key}
             item={item}
             index={i}
             width={width}
@@ -87,7 +87,7 @@ export function HomeHeroSlider({ items }: Props) {
         pointerEvents='box-none'
       >
         <Animated.View
-          key={current?.id}
+          key={current?.key}
           entering={FadeIn.duration(400)}
           exiting={FadeOut.duration(200)}
           style={{ gap: space[2] }}
@@ -100,9 +100,13 @@ export function HomeHeroSlider({ items }: Props) {
             {current?.name}
           </Text>
 
-          <Text style={styles.genres}>
-            Thrillers • Drammas • Action • Chime
-          </Text>
+          {!!current?.genres?.length ? (
+            <Text style={styles.genres}>
+              {current.genres.slice(0, 3).join(' • ')}
+            </Text>
+          ) : (
+            <Text style={styles.genres}>No genres available</Text>
+          )}
 
           <Text
             style={styles.description}
@@ -135,7 +139,7 @@ export function HomeHeroSlider({ items }: Props) {
           <View style={styles.dots}>
             {items.map((item, index) => (
               <PaginationDot
-                key={item.id}
+                key={item.key}
                 index={index}
                 width={width}
                 scrollX={scrollX}
