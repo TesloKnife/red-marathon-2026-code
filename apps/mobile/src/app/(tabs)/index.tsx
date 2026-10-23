@@ -1,3 +1,4 @@
+import { router } from 'expo-router'
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue
@@ -86,7 +87,7 @@ export default function Index() {
     <Screen edges={[]}>
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: space[20] }}
+        contentContainerStyle={{ paddingBottom: space[24] }}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
       >
@@ -98,7 +99,9 @@ export default function Index() {
         >
           {topPicksForYouItems.map(title => (
             <TitleCard
-              onPress={() => {}}
+              onPress={() => {
+                router.push(`/title/${title.key}`)
+              }}
               title={title}
               key={title.key}
             ></TitleCard>
@@ -111,7 +114,9 @@ export default function Index() {
         >
           {trendingsItems.map(title => (
             <TitleCard
-              onPress={() => {}}
+              onPress={() => {
+                router.push(`/title/${title.key}`)
+              }}
               title={title}
               key={title.key}
             />

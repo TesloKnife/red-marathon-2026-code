@@ -1,11 +1,11 @@
 import { LinearGradient } from 'expo-linear-gradient'
+import { router } from 'expo-router'
 import { Play, Plus } from 'lucide-react-native'
 import { useState } from 'react'
 import {
   type NativeScrollEvent,
   type NativeSyntheticEvent,
   StyleSheet,
-  Text,
   View,
   useWindowDimensions
 } from 'react-native'
@@ -20,6 +20,7 @@ import { colors, fontSize, fontWeight, space } from '@app/tokens'
 
 import type { DiscoverItemResponse } from '@app/api'
 
+import { TitleInfo } from '../hero/TitleInfo'
 import { Button } from '../ui/Button'
 
 import { HomeHeroSlide } from './HomeHeroSlide'
@@ -93,28 +94,12 @@ export function HomeHeroSlider({ items }: Props) {
           style={{ gap: space[2] }}
           pointerEvents='none'
         >
-          <Text
-            style={styles.name}
-            numberOfLines={2}
-          >
-            {current?.name}
-          </Text>
-
-          {!!current?.genres?.length ? (
-            <Text style={styles.genres}>
-              {current.genres.slice(0, 3).join(' • ')}
-            </Text>
-          ) : (
-            <Text style={styles.genres}>No genres available</Text>
-          )}
-
-          <Text
-            style={styles.description}
-            numberOfLines={2}
-          >
-            When an overachieving college senior makes a wrong turn, her road
-            trip becomes a life-changing fight for...
-          </Text>
+          <TitleInfo
+            name={current?.name || ''}
+            meta={current?.genres?.slice(0, 3).join(' • ')}
+            description='When an overachieving college senior makes a wrong turn, her road
+            trip becomes a life-changing fight for...'
+          />
         </Animated.View>
 
         <View
@@ -124,7 +109,9 @@ export function HomeHeroSlider({ items }: Props) {
           <View style={styles.actions}>
             <Button
               icon={Play}
-              onPress={() => {}}
+              onPress={() => {
+                router.push(`/title/${current?.key}`)
+              }}
             >
               Watch Movie
             </Button>
