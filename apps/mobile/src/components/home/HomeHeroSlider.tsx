@@ -20,6 +20,7 @@ import { colors, fontSize, fontWeight, space } from '@app/tokens'
 
 import type { DiscoverItemResponse } from '@app/api'
 
+import { HERO_GRADIENT } from '../hero/HeroBackdrop'
 import { TitleInfo } from '../hero/TitleInfo'
 import { Button } from '../ui/Button'
 
@@ -72,13 +73,8 @@ export function HomeHeroSlider({ items }: Props) {
       </Animated.ScrollView>
 
       <LinearGradient
-        colors={[
-          'rgba(2,0,3,0.7)',
-          'transparent',
-          'rgba(2,0,3,0.9)',
-          colors.bg.base
-        ]}
-        locations={[0, 0.35, 0.75, 1]}
+        colors={HERO_GRADIENT.colors}
+        locations={HERO_GRADIENT.locations}
         style={StyleSheet.absoluteFill}
         pointerEvents='none'
       />
